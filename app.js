@@ -103,3 +103,32 @@ async function sendPhoto(){
     alert("Foto inviata 🎉");
 
 }
+
+
+function resetUpload() {
+
+    selectedFile = null;
+
+    // pulisce il campo file
+    document.getElementById("photoInput").value = "";
+
+    // pulisce immagine preview
+    document.getElementById("previewImage").src = "";
+
+    // pulisce commento
+    document.getElementById("comment").value = "";
+
+
+    // torna alla schermata iniziale
+    document
+        .getElementById("previewScreen")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("uploadScreen")
+        .classList.remove("hidden");
+
+}
+
+
