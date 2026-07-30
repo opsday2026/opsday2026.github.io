@@ -199,7 +199,7 @@ async function startCamera(){
         });
 
         video.srcObject = stream;
-        video.style.transform = "scaleX(-1)";
+        video.style.transform = "scaleX(1)";
         video.style.webkitTransform = "scaleX(-1)";
         video.style.transformOrigin = "center center";
         video.play().catch(() => {});
