@@ -6,7 +6,6 @@ const supabaseClient = supabase.createClient(
     SUPABASE_KEY
 );
 
-
 async function uploadPhoto(){
 
     const file = document.getElementById("fileInput").files[0];
@@ -16,15 +15,14 @@ async function uploadPhoto(){
         return;
     }
 
-    const filename =
-        Date.now() + "_" + file.name;
+
+    const filename = crypto.randomUUID() + "-" + file.name;
 
 
-    const { data, error } =
-        await supabaseClient
+    const { data, error } = await supabaseClient
         .storage
         .from("photos")
-        .upload(filename,file);
+        .upload(filename, file);
 
 
     if(error){
