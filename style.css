@@ -161,42 +161,95 @@ body {
 
 
 .overlay {
-
     position:absolute;
-
-    bottom:20px;
-    left:20px;
-    right:20px;
-
+    left:50%;
+    bottom:24px;
+    transform:translateX(-50%);
+    width:min(92vw, 520px);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:center;
 }
 
+.success-overlay {
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:rgba(0,0,0,0.45);
+    z-index:40;
+}
 
+.success-card {
+    width:min(90vw, 360px);
+    background:rgba(255,255,255,0.97);
+    border-radius:20px;
+    padding:24px 20px 20px;
+    box-shadow:0 16px 40px rgba(0,0,0,0.25);
+    text-align:center;
+}
+
+.success-card p {
+    margin:0 0 16px;
+    font-size:18px;
+    font-weight:600;
+    color:#111827;
+}
+
+.success-card button {
+    width:100%;
+    height:48px;
+    border-radius:999px;
+    font-size:16px;
+    font-weight:600;
+}
 
 textarea {
-
     width:100%;
-    height:80px;
-
-    font-size:18px;
-
-    padding:10px;
-
-    background:white;
-    opacity:0.9;
-
+    min-height:84px;
+    max-height:140px;
+    display:block;
+    font-size:16px;
+    line-height:1.4;
+    padding:10px 12px;
+    margin:0;
+    border:1px solid #d1d5db;
+    border-radius:14px;
+    background:#fff;
+    color:#111827;
+    opacity:1;
+    caret-color:#111827;
+    resize:none;
+    outline:none;
+    box-sizing:border-box;
+    text-align:left;
+    overflow:auto;
+    font-family:Arial, sans-serif;
 }
 
-
+textarea::placeholder {
+    color:#9ca3af;
+    opacity:1;
+}
 
 button {
-
-    margin-top:10px;
-
     width:100%;
-    height:60px;
+    height:54px;
+    font-size:18px;
+    font-weight:600;
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow:0 10px 24px rgba(37,99,235,0.35);
+    cursor:pointer;
+}
 
-    font-size:22px;
-
+button:hover {
+    filter:brightness(1.05);
 }
 
 

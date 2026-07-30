@@ -143,9 +143,20 @@ async function sendPhoto(){
 
 
 
-    alert("Foto inviata 🎉");
-    resetUpload();
+    showSuccessMessage();
 
+}
+
+function showSuccessMessage() {
+    const overlay = document.getElementById("successOverlay");
+    const okButton = document.getElementById("successOk");
+
+    overlay?.classList.remove("hidden");
+
+    okButton?.addEventListener("click", () => {
+        overlay?.classList.add("hidden");
+        resetUpload();
+    }, { once: true });
 }
 
 
@@ -246,6 +257,7 @@ if (takePhoto) {
         .getElementById("previewImage")
         .src=url;
 
+        document.getElementById("comment").value = "";
 
         document
         .getElementById("uploadScreen")
