@@ -75,7 +75,8 @@ async function sendPhoto(){
         return;
     }
     
-    
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
     const photoId = data.Id;
     console.log("ID foto:", photoId);
 
