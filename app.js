@@ -199,6 +199,9 @@ async function startCamera(){
         });
 
         video.srcObject = stream;
+        video.style.transform = "scaleX(-1)";
+        video.style.webkitTransform = "scaleX(-1)";
+        video.style.transformOrigin = "center center";
         video.play().catch(() => {});
         fallback?.classList.add("hidden");
     } catch (error) {
@@ -227,8 +230,9 @@ if (takePhoto) {
 
 
     const ctx = canvas.getContext("2d");
-
-
+    ctx.save();
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
     ctx.drawImage(
         video,
         0,
@@ -236,6 +240,7 @@ if (takePhoto) {
         canvas.width,
         canvas.height
     );
+    ctx.restore();
 
 
     canvas.toBlob((blob)=>{
