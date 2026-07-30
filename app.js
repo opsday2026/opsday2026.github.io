@@ -101,6 +101,7 @@ async function sendPhoto(){
 
 
     alert("Foto inviata 🎉");
+    resetUpload();
 
 }
 
