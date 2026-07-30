@@ -10,41 +10,49 @@ const supabaseClient = supabase.createClient(
 let selectedFile = null;
 
 
+document.addEventListener("DOMContentLoaded", () => {
 
-document
-.getElementById("photoInput")
-.addEventListener(
-"change",
-function(e){
+    const input = document.getElementById("photoInput");
 
+    input.addEventListener("change", function(e) {
 
-    selectedFile = e.target.files[0];
+        console.log("File selezionato");
 
+        selectedFile = e.target.files[0];
 
-    if(!selectedFile)
-        return;
+        console.log(selectedFile);
 
 
-    const url = URL.createObjectURL(selectedFile);
+        if (!selectedFile) {
+            return;
+        }
 
 
-    document
-    .getElementById("previewImage")
-    .src=url;
+        const url = URL.createObjectURL(selectedFile);
+
+        console.log("Preview URL:", url);
 
 
+        const img = document.getElementById("previewImage");
 
-    document
-    .getElementById("uploadScreen")
-    .classList.add("hidden");
+        img.src = url;
 
 
-    document
-    .getElementById("previewScreen")
-    .classList.remove("hidden");
+        document
+            .getElementById("uploadScreen")
+            .classList.add("hidden");
 
+
+        document
+            .getElementById("previewScreen")
+            .classList.remove("hidden");
+
+
+    });
 
 });
+
+
 
 async function sendPhoto(){
 
