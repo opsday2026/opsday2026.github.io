@@ -20,6 +20,14 @@ const video = document.getElementById("camera");
 
 let selectedFile = null;
 
+function setViewportHeight() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+}
+
+window.addEventListener("resize", setViewportHeight);
+window.addEventListener("orientationchange", setViewportHeight);
+setViewportHeight();
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -169,18 +177,29 @@ function resetUpload() {
 
 async function startCamera(){
 
-    const stream = await navigator.mediaDevices.getUserMedia({
+    const fallback = document.getElementById("cameraFallback");
 
-        video:{
-            facingMode:"user"
-        },
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video:{
+                facingMode:"user"
+            },
+            audio:false
+        });
 
-        audio:false
+        video.srcObject = stream;
+        video.play().catch(() => {});
+        fallback?.classList.add("hidden");
+    } catch (error) {
+        console.error("Errore fotocamera:", error);
+        fallback?.classList.remove("hidden");
 
-    });
-
-
-    video.srcObject = stream;
+        const statusBox = document.getElementById("status");
+        if (statusBox) {
+            statusBox.textContent = "Impossibile accedere alla fotocamera. Consenti i permessi o apri la pagina su HTTPS.";
+            statusBox.classList.remove("hidden");
+        }
+    }
 
 }
 
