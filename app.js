@@ -64,20 +64,20 @@ async function sendPhoto(){
 
 
 
-    const upload =
-        await supabaseClient
+    const { data, error } = await supabaseClient
         .storage
         .from("photos")
         .upload(filename, selectedFile);
-
-
-
-    if(upload.error){
-
-        alert(upload.error.message);
+    
+    
+    if (error) {
+        console.error(error);
         return;
-
     }
+    
+    
+    const photoId = data.Id;
+    console.log("ID foto:", photoId);
 
 
 
@@ -93,6 +93,7 @@ async function sendPhoto(){
     .insert({
 
         filename: filename,
+        photo_id: photoId,
         comment: comment,
         created_at: new Date()
 
