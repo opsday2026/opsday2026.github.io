@@ -119,7 +119,7 @@ function resetUpload() {
     selectedFile = null;
 
     // pulisce il campo file
-    document.getElementById("photoInput").value = "";
+    document.getElementById("takePhoto").value = "";
 
     // pulisce immagine preview
     document.getElementById("previewImage").src = "";
