@@ -1,21 +1,21 @@
 const SUPABASE_URL = "https://sjrgwfnxpzwqtehfvduu.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqcmd3Zm54cHp3cXRlaGZ2ZHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzODQwNjMsImV4cCI6MjEwMDk2MDA2M30.K1bxrpcuhfpZIkmhLKFYkJ2b1VIRDODnaDgYH-Jekpw";
 
+const xCustomPass = new URLSearchParams(window.location.search).get("xcustompass") || "";
+
 const supabaseClient = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY, {
   global: {
     headers: {
-      // Inserisci qui la tua chiave e il tuo valore custom
-      'X-Custom-Pass': '123', 
+      'X-Custom-Pass': xCustomPass,
     },
   },
 }
 );
 
+
 const video = document.getElementById("camera");
-
-
 
 
 let selectedFile = null;
@@ -24,8 +24,10 @@ let selectedFile = null;
 document.addEventListener("DOMContentLoaded", () => {
 
     const input = document.getElementById("photoInput");
+    const statusBox = document.getElementById("status");
+    const uploadScreen = document.getElementById("uploadScreen");
 
-    input.addEventListener("change", function(e) {
+    input?.addEventListener("change", function(e) {
 
         console.log("File selezionato");
 
@@ -49,9 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         img.src = url;
 
 
-        document
-            .getElementById("uploadScreen")
-            .classList.add("hidden");
+        uploadScreen.classList.add("hidden");
 
 
         document
@@ -61,9 +61,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    checkLoginAndStart(statusBox, uploadScreen);
+
 });
 
+async function checkLoginAndStart(statusBox, uploadScreen) {
+    statusBox.textContent = "Verifico l'accesso...";
 
+    const { data, error } = await supabaseClient
+        .from("login")
+        .select("*")
+        .limit(1)
+        .maybeSingle();
+
+    if (error || !data || data.id !== 1 ) {
+        statusBox.textContent = "Accesso negato: impossibile attivare la videocamera.";
+        uploadScreen.classList.add("hidden");
+        setTimeout(() => statusBox.classList.add("hidden"), 3000);
+        return;
+    }
+
+    statusBox.textContent = "Accesso autorizzato. Fotocamera attiva.";
+    uploadScreen.classList.remove("hidden");
+    setTimeout(() => statusBox.classList.add("hidden"), 3000);
+    await startCamera();
+}
 
 async function sendPhoto(){
 
@@ -164,8 +186,8 @@ async function startCamera(){
 
 const takePhoto = document.getElementById("takePhoto");
 
-
-takePhoto.addEventListener("click", () => {
+if (takePhoto) {
+    takePhoto.addEventListener("click", () => {
 
 
     const canvas = document.getElementById("canvas");
@@ -221,7 +243,5 @@ takePhoto.addEventListener("click", () => {
     0.85);
 
 
-});
-
-
-startCamera();
+    });
+}

@@ -13,23 +13,6 @@
 
 
 <body>
-
-
-<!--div id="uploadScreen">
-
-    <label class="uploadButton">
-
-        <span>+</span>
-
-        <input 
-            type="file"
-            id="photoInput"
-            accept="image/*">
-
-    </label>
-
-</div-->
-
 <div id="uploadScreen">
 
     <video 
@@ -38,17 +21,16 @@
         playsinline>
     </video>
 
-
     <button id="takePhoto">
         <span></span>
     </button>
 
 </div>
 
+<div id="status" class="status">Verifica accesso in corso...</div>
+<img id="logo" src="Logo.png" alt="Logo">
 
 <canvas id="canvas" class="hidden"></canvas>    
-
-
 
 <div id="previewScreen" class="hidden">
 
@@ -61,7 +43,6 @@
             placeholder="Scrivi un commento...">
         </textarea>
 
-
         <button onclick="sendPhoto()">
             Invia
         </button>
@@ -69,7 +50,6 @@
     </div>
 
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="app.js"></script>
