@@ -6,30 +6,92 @@ const supabaseClient = supabase.createClient(
     SUPABASE_KEY
 );
 
-async function uploadPhoto(){
 
-    const file = document.getElementById("fileInput").files[0];
+let selectedFile = null;
 
-    if(!file){
-        alert("Seleziona una foto");
+
+
+document
+.getElementById("photoInput")
+.addEventListener(
+"change",
+function(e){
+
+
+    selectedFile = e.target.files[0];
+
+
+    if(!selectedFile)
         return;
-    }
 
 
-    const filename = crypto.randomUUID() + "-" + file.name;
+    const url = URL.createObjectURL(selectedFile);
 
 
-    const { data, error } = await supabaseClient
+    document
+    .getElementById("previewImage")
+    .src=url;
+
+
+
+    document
+    .getElementById("uploadScreen")
+    .classList.add("hidden");
+
+
+    document
+    .getElementById("previewScreen")
+    .classList.remove("hidden");
+
+
+});
+
+async function sendPhoto(){
+
+
+    const filename =
+        crypto.randomUUID()
+        + "-"
+        + selectedFile.name;
+
+
+
+    const upload =
+        await supabaseClient
         .storage
         .from("photos")
-        .upload(filename, file);
+        .upload(filename, selectedFile);
 
 
-    if(error){
-        console.error(error);
-        alert("Errore upload");
+
+    if(upload.error){
+
+        alert(upload.error.message);
+        return;
+
     }
-    else{
-        alert("Foto caricata!");
-    }
+
+
+
+    const comment =
+        document
+        .getElementById("comment")
+        .value;
+
+
+
+    await supabaseClient
+    .from("photos_comments")
+    .insert({
+
+        filename: filename,
+        comment: comment,
+        created_at: new Date()
+
+    });
+
+
+
+    alert("Foto inviata 🎉");
+
 }
