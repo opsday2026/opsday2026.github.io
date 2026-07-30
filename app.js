@@ -6,6 +6,12 @@ const supabaseClient = supabase.createClient(
     SUPABASE_KEY
 );
 
+const video = document.getElementById("camera");
+
+
+
+
+
 
 let selectedFile = null;
 
@@ -134,4 +140,22 @@ function resetUpload() {
 
 }
 
+async function startCamera(){
 
+    const stream = await navigator.mediaDevices.getUserMedia({
+
+        video:{
+            facingMode:"user"
+        },
+
+        audio:false
+
+    });
+
+
+    video.srcObject = stream;
+
+}
+
+
+startCamera();
