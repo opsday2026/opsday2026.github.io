@@ -157,5 +157,66 @@ async function startCamera(){
 
 }
 
+const takePhoto = document.getElementById("takePhoto");
+
+
+takePhoto.addEventListener("click", () => {
+
+
+    const canvas = document.getElementById("canvas");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+
+    const ctx = canvas.getContext("2d");
+
+
+    ctx.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    canvas.toBlob((blob)=>{
+
+
+        selectedFile = new File(
+            [blob],
+            crypto.randomUUID()+".jpg",
+            {
+                type:"image/jpeg"
+            }
+        );
+
+
+        const url = URL.createObjectURL(blob);
+
+
+        document
+        .getElementById("previewImage")
+        .src=url;
+
+
+        document
+        .getElementById("uploadScreen")
+        .classList.add("hidden");
+
+
+        document
+        .getElementById("previewScreen")
+        .classList.remove("hidden");
+
+
+    },
+    "image/jpeg",
+    0.85);
+
+
+});
+
 
 startCamera();
