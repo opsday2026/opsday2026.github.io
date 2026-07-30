@@ -3,7 +3,14 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const supabaseClient = supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_KEY
+    SUPABASE_KEY, {
+  global: {
+    headers: {
+      // Inserisci qui la tua chiave e il tuo valore custom
+      'X-Custom-Pass': '123', 
+    },
+  },
+}
 );
 
 const video = document.getElementById("camera");
