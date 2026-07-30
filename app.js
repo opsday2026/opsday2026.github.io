@@ -1,5 +1,5 @@
 const SUPABASE_URL = "https://sjrgwfnxpzwqtehfvduu.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqcmd3Zm54cHp3cXRlaGZ2ZHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzODQwNjMsImV4cCI6MjEwMDk2MDA2M30.K1bxrpcuhfpZIkmhLKFYkJ2b1VIRDODnaDgYH-Jekpw";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqcmd3Zm54cHp3cXRlaGZ2ZHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzODQwNjMsImV4cCI6MjEwMDk2MDA2M30.K1bxrpcuhf[...] 
 
 const supabaseClient = supabase.createClient(
     SUPABASE_URL,
@@ -11,9 +11,8 @@ const video = document.getElementById("camera");
 
 
 
-
-
 let selectedFile = null;
+let lastObjectUrl = null;
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -34,7 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        // revoca eventuale object URL precedente
+        if (lastObjectUrl) {
+            try { URL.revokeObjectURL(lastObjectUrl); } catch (err) { /* ignore */ }
+            lastObjectUrl = null;
+        }
+
         const url = URL.createObjectURL(selectedFile);
+        lastObjectUrl = url;
 
         console.log("Preview URL:", url);
 
@@ -69,7 +75,6 @@ async function sendPhoto(){
         + selectedFile.name;
 
 
-
     const { data, error } = await supabaseClient
         .storage
         .from("photos")
@@ -94,7 +99,6 @@ async function sendPhoto(){
         .value;
 
 
-
     await supabaseClient
     .from("photos_comments")
     .insert({
@@ -107,7 +111,6 @@ async function sendPhoto(){
     });
 
 
-
     alert("Foto inviata 🎉");
     resetUpload();
 
@@ -118,25 +121,34 @@ function resetUpload() {
 
     selectedFile = null;
 
-    // pulisce il campo file
-    document.getElementById("takePhoto").value = "";
+    // revoca l'object URL usato per la preview (se presente)
+    if (lastObjectUrl) {
+        try { URL.revokeObjectURL(lastObjectUrl); } catch (e) { /* ignore */ }
+        lastObjectUrl = null;
+    }
+
+    // pulisce il campo file (photoInput NON takePhoto)
+    const photoInput = document.getElementById("photoInput");
+    if (photoInput) photoInput.value = "";
 
     // pulisce immagine preview
-    document.getElementById("previewImage").src = "";
+    const preview = document.getElementById("previewImage");
+    if (preview) {
+        preview.src = "";
+    }
 
     // pulisce commento
-    document.getElementById("comment").value = "";
+    const commentEl = document.getElementById("comment");
+    if (commentEl) commentEl.value = "";
 
 
     // torna alla schermata iniziale
-    document
-        .getElementById("previewScreen")
-        .classList.add("hidden");
+    const previewScreen = document.getElementById("previewScreen");
+    if (previewScreen) previewScreen.classList.add("hidden");
 
 
-    document
-        .getElementById("uploadScreen")
-        .classList.remove("hidden");
+    const uploadScreen = document.getElementById("uploadScreen");
+    if (uploadScreen) uploadScreen.classList.remove("hidden");
 
 }
 
@@ -158,6 +170,7 @@ async function startCamera(){
 }
 
 const takePhoto = document.getElementById("takePhoto");
+
 
 
 takePhoto.addEventListener("click", () => {
@@ -193,7 +206,14 @@ takePhoto.addEventListener("click", () => {
         );
 
 
+        // revoca eventuale object URL precedente
+        if (lastObjectUrl) {
+            try { URL.revokeObjectURL(lastObjectUrl); } catch (err) { /* ignore */ }
+            lastObjectUrl = null;
+        }
+
         const url = URL.createObjectURL(blob);
+        lastObjectUrl = url;
 
 
         document
@@ -214,6 +234,7 @@ takePhoto.addEventListener("click", () => {
     },
     "image/jpeg",
     0.85);
+
 
 
 });
