@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<title>OpsDay 2026 - Live Wall</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+<div id="liveScreen">
+    <img id="logo" src="Logo.png" alt="Logo">
+    <div id="status" class="status">Verifica accesso in corso...</div>
+
+    <div class="live-column left-column">
+        <div id="photoFrame">
+            <img id="photoImage" alt="Foto live" loading="eager">
+        </div>
+    </div>
+
+    <div class="live-column right-column">
+        <div id="photoComment" class="photo-comment">Caricamento commento...</div>
+        <div id="photoInfo" class="photo-info" hidden>Attendi la prossima foto.</div>
+
+        <button id="playPause" class="play-pause" type="button" aria-label="Pausa">
+            <!-- icon injected by JS -->
+        </button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="live.js"></script>
+
+</body>
+
+</html>
