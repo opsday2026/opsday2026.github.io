@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById("photoInput");
     const statusBox = document.getElementById("status");
     const uploadScreen = document.getElementById("uploadScreen");
+    const logo = document.getElementById("logo");
 
     input?.addEventListener("change", function(e) {
 
@@ -85,13 +86,13 @@ async function checkLoginAndStart(statusBox, uploadScreen) {
     if (error || !data || data.id !== 1 ) {
         statusBox.textContent = "Accesso negato: impossibile attivare la videocamera.";
         uploadScreen.classList.add("hidden");
-        setTimeout(() => statusBox.classList.add("hidden"), 3000);
+        setTimeout(() => statusBox.classList.add("hidden"), 5000);
         return;
     }
 
     statusBox.textContent = "Accesso autorizzato. Fotocamera attiva.";
     uploadScreen.classList.remove("hidden");
-    setTimeout(() => statusBox.classList.add("hidden"), 3000);
+    setTimeout(() => statusBox.classList.add("hidden"), 5000);
     await startCamera();
 }
 
@@ -193,7 +194,9 @@ async function startCamera(){
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video:{
-                facingMode:"user"
+                facingMode:"environment",
+                width: { ideal: 4096 },
+                height: { ideal: 2160 }
             },
             audio:false
         });
