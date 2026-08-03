@@ -19,6 +19,12 @@ const video = document.getElementById("camera");
 
 
 let selectedFile = null;
+let orientationPermissionRequested = false;
+let gyroOrientation = {
+    available: false,
+    landscape: false,
+    lastUpdate: 0,
+};
 
 function setViewportHeight() {
     const vh = window.innerHeight * 0.01;
@@ -220,7 +226,63 @@ async function startCamera(){
 
 }
 
+function updateGyroOrientation(event) {
+    if (typeof event?.beta !== "number" || typeof event?.gamma !== "number") {
+        return;
+    }
+
+    const landscape = Math.abs(event.gamma) > 45;
+    gyroOrientation = {
+        available: true,
+        landscape,
+        lastUpdate: Date.now(),
+    };
+}
+
+function startOrientationTracking() {
+    if (typeof window === "undefined" || typeof window.addEventListener !== "function") {
+        return;
+    }
+
+    window.addEventListener("deviceorientation", (event) => {
+        updateGyroOrientation(event);
+    }, true);
+
+    window.addEventListener("orientationchange", () => {
+        gyroOrientation.available = false;
+        gyroOrientation.landscape = false;
+        gyroOrientation.lastUpdate = 0;
+    });
+}
+
+async function ensureOrientationPermission() {
+    if (typeof DeviceOrientationEvent === "undefined") {
+        return false;
+    }
+
+    if (typeof DeviceOrientationEvent.requestPermission !== "function") {
+        return true;
+    }
+
+    if (orientationPermissionRequested) {
+        return gyroOrientation.available;
+    }
+
+    try {
+        const response = await DeviceOrientationEvent.requestPermission();
+        orientationPermissionRequested = true;
+        return response === "granted";
+    } catch (error) {
+        console.warn("Impossibile richiedere il permesso per il giroscopio:", error);
+        return false;
+    }
+}
+
 function isDeviceLandscape() {
+    if (gyroOrientation.available && Date.now() - gyroOrientation.lastUpdate < 1000) {
+        return gyroOrientation.landscape;
+    }
+
     if (window.orientation !== undefined) {
         return Math.abs(window.orientation) === 90;
     }
@@ -233,7 +295,7 @@ function isDeviceLandscape() {
     return window.innerWidth > window.innerHeight;
 }
 
-function capturePhotoFromVideo() {
+async function capturePhotoFromVideo() {
     const canvas = document.getElementById("canvas");
     const sourceWidth = video.videoWidth || video.clientWidth || 1280;
     const sourceHeight = video.videoHeight || video.clientHeight || 720;
@@ -286,12 +348,15 @@ function capturePhotoFromVideo() {
     return canvas;
 }
 
+startOrientationTracking();
+
 const takePhoto = document.getElementById("takePhoto");
 
 if (takePhoto) {
-    takePhoto.addEventListener("click", () => {
+    takePhoto.addEventListener("click", async () => {
+    await ensureOrientationPermission();
 
-    const canvas = capturePhotoFromVideo();
+    const canvas = await capturePhotoFromVideo();
 
     canvas.toBlob((blob)=>{
 
