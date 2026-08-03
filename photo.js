@@ -25,6 +25,7 @@ const background = document.getElementById("background");
 const commentSection = document.getElementById("commentSection");
 const statusBox = document.getElementById("status");
 const uploadScreen = document.getElementById("uploadScreen");
+const content = document.getElementById("content");
 checkLoginAndStart(statusBox, uploadScreen);
 takePhoto.onclick = () => {
 
@@ -50,7 +51,8 @@ photoInput.onchange = (e)=>{
     takePhoto.style.display="none";
 
     commentSection.style.display="block";
-    document.getElementById("content").classList.remove("hidden");
+    content.classList.remove("hidden");
+    content.style.display="block";
 
 
 }
