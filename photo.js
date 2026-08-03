@@ -103,10 +103,20 @@ async function sendPhoto(){
 
         });
 
-    alert("Foto caricata!");
+    showSuccessMessage();
 
-    resetPage();
+}
 
+function showSuccessMessage() {
+    const overlay = document.getElementById("successOverlay");
+    const okButton = document.getElementById("successOk");
+
+    overlay?.classList.remove("hidden");
+
+    okButton?.addEventListener("click", () => {
+        overlay?.classList.add("hidden");
+        resetPage();
+    }, { once: true });
 }
 
 function resetPage(){
