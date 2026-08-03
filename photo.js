@@ -23,6 +23,8 @@ const photoInput = document.getElementById("photoInput");
 const preview = document.getElementById("preview");
 const background = document.getElementById("background");
 const commentSection = document.getElementById("commentSection");
+const statusBox = document.getElementById("status");
+const uploadScreen = document.getElementById("uploadScreen");
 
 takePhoto.onclick = () => {
 
@@ -120,4 +122,27 @@ function resetPage(){
 
     takePhoto.style.display="block";
 
+}
+
+
+async function checkLoginAndStart(statusBox, uploadScreen) {
+    statusBox.textContent = "Verifico l'accesso...";
+
+    const { data, error } = await supabaseClient
+        .from("login")
+        .select("*")
+        .limit(1)
+        .maybeSingle();
+
+    if (error || !data || data.id !== 1 ) {
+        statusBox.textContent = "Accesso negato: impossibile attivare la videocamera.";
+        uploadScreen.classList.add("hidden");
+        setTimeout(() => statusBox.classList.add("hidden"), 5000);
+        return;
+    }
+
+    statusBox.textContent = "Accesso autorizzato. Fotocamera attiva.";
+    uploadScreen.classList.remove("hidden");
+    setTimeout(() => statusBox.classList.add("hidden"), 5000);
+    await startCamera();
 }
