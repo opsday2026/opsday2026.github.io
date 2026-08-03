@@ -18,7 +18,7 @@ const supabaseClient = supabase.createClient(
 
 let selectedFile = null;
 
-const takePhoto = document.getElementById("takePhoto");
+const takePhoto = document.getElementById("takePhotoButton");
 const photoInput = document.getElementById("photoInput");
 const preview = document.getElementById("previewImage");
 const background = document.getElementById("background");
