@@ -1,57 +1,60 @@
 <!DOCTYPE html>
 <html lang="it">
 
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
 
-<title>OpsDay 2026</title>
+        <title>OpsDay 2026</title>
 
-<link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style.css">
 
-</head>
+    </head>
 
-<body>
-<div id="uploadScreen">
-    <img id="logo" src="Logo.png" alt="Logo">
+    <body>
+        <div id="uploadScreen">
+            <img id="logo" src="Logo.png" alt="Logo">
 
-    <button id="takePhoto">
-        📷 Scattati una foto
-    </button>
+            <button id="takePhoto">
+                📷 Scattati una foto
+            </button>
 
-    <input
-        id="photoInput"
-        type="file"
-        accept="image/*"
-        capture="user"
-        hidden>
-</div>
-<div id="status" class="status">Verifica accesso in corso...</div>
-<div id="content" class="hidden">
-    <img id="preview">
+            <input
+                id="photoInput"
+                type="file"
+                accept="image/*"
+                capture="user"
+                hidden>
 
-    <div id="commentSection">
+            <div id="status" class="status">Verifica accesso in corso...</div>
+            <div id="content" class="hidden">
+                <img id="preview">
 
-        <textarea
-            id="comment"
-            placeholder="Scrivi un commento..."></textarea>
+                <div id="commentSection">
 
-        <button
-            class="send"
-            id="sendButton">
+                    <textarea
+                        id="comment"
+                        placeholder="Scrivi un commento..."></textarea>
 
-            Invia
+                    <button
+                        class="send"
+                        id="sendButton">
 
-        </button>
+                        Invia
 
-    </div>
+                    </button>
 
-</div>
+                </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="photo.js"></script>
+            </div>
+        </div>
 
-</body>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="photo.js"></script>
+
+    </body>
 </html>

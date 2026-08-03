@@ -148,5 +148,5 @@ async function checkLoginAndStart(statusBox, uploadScreen) {
     statusBox.textContent = "Accesso autorizzato. Fotocamera attiva.";
     uploadScreen.classList.remove("hidden");
     setTimeout(() => statusBox.classList.add("hidden"), 5000);
-    await startCamera();
+    
 }
