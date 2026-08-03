@@ -216,6 +216,7 @@ async function startCamera(){
         video.style.transformOrigin = "center center";
         video.play().catch(() => {});
         fallback?.classList.add("hidden");
+        await ensureOrientationPermission();
     } catch (error) {
         console.error("Errore fotocamera:", error);
         fallback?.classList.remove("hidden");
@@ -260,20 +261,6 @@ function startOrientationTracking() {
         gyroOrientation.gamma = 0;
         gyroOrientation.lastUpdate = 0;
     });
-}
-
-function registerOrientationPermissionPrompt() {
-    if (typeof window === "undefined" || typeof window.addEventListener !== "function") {
-        return;
-    }
-
-    const triggerPermission = () => {
-        ensureOrientationPermission();
-    };
-
-    window.addEventListener("pointerdown", triggerPermission, { once: true });
-    window.addEventListener("touchstart", triggerPermission, { once: true });
-    window.addEventListener("click", triggerPermission, { once: true });
 }
 
 async function ensureOrientationPermission() {
@@ -379,7 +366,6 @@ async function capturePhotoFromVideo() {
 }
 
 startOrientationTracking();
-registerOrientationPermissionPrompt();
 
 const takePhoto = document.getElementById("takePhoto");
 
