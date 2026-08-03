@@ -136,6 +136,22 @@ body {
 
 }
 
+#takePhotoButton {
+
+    padding:18px 35px;
+
+    font-size:22px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+
+
 .uploadButton {
 
     width:90vw;
