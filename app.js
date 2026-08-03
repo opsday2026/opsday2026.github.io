@@ -23,6 +23,8 @@ let orientationPermissionRequested = false;
 let gyroOrientation = {
     available: false,
     landscape: false,
+    beta: 0,
+    gamma: 0,
     lastUpdate: 0,
 };
 
@@ -235,6 +237,8 @@ function updateGyroOrientation(event) {
     gyroOrientation = {
         available: true,
         landscape,
+        beta: event.beta,
+        gamma: event.gamma,
         lastUpdate: Date.now(),
     };
 }
@@ -251,8 +255,24 @@ function startOrientationTracking() {
     window.addEventListener("orientationchange", () => {
         gyroOrientation.available = false;
         gyroOrientation.landscape = false;
+        gyroOrientation.beta = 0;
+        gyroOrientation.gamma = 0;
         gyroOrientation.lastUpdate = 0;
     });
+}
+
+function registerOrientationPermissionPrompt() {
+    if (typeof window === "undefined" || typeof window.addEventListener !== "function") {
+        return;
+    }
+
+    const triggerPermission = () => {
+        ensureOrientationPermission();
+    };
+
+    window.addEventListener("pointerdown", triggerPermission, { once: true });
+    window.addEventListener("touchstart", triggerPermission, { once: true });
+    window.addEventListener("click", triggerPermission, { once: true });
 }
 
 async function ensureOrientationPermission() {
@@ -278,29 +298,43 @@ async function ensureOrientationPermission() {
     }
 }
 
-function isDeviceLandscape() {
+function getPhotoRotationDegrees() {
     if (gyroOrientation.available && Date.now() - gyroOrientation.lastUpdate < 1000) {
-        return gyroOrientation.landscape;
+        if (gyroOrientation.gamma < -45) {
+            return 90;
+        }
+
+        if (gyroOrientation.gamma > 45) {
+            return -90;
+        }
+
+        if (Math.abs(gyroOrientation.beta) > 90) {
+            return 180;
+        }
     }
 
     if (window.orientation !== undefined) {
-        return Math.abs(window.orientation) === 90;
+        return -window.orientation;
     }
 
     const orientationType = screen?.orientation?.type;
-    if (orientationType) {
-        return orientationType.includes("landscape");
+    if (orientationType?.includes("landscape-primary")) {
+        return -90;
     }
 
-    return window.innerWidth > window.innerHeight;
+    if (orientationType?.includes("landscape-secondary")) {
+        return 90;
+    }
+
+    return 0;
 }
 
 async function capturePhotoFromVideo() {
     const canvas = document.getElementById("canvas");
     const sourceWidth = video.videoWidth || video.clientWidth || 1280;
     const sourceHeight = video.videoHeight || video.clientHeight || 720;
-    const deviceIsLandscape = isDeviceLandscape();
-    const needsRotation = (deviceIsLandscape && sourceHeight > sourceWidth) || (!deviceIsLandscape && sourceWidth > sourceHeight);
+    const rotationDegrees = getPhotoRotationDegrees();
+    const needsRotation = rotationDegrees !== 0;
 
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = sourceWidth;
@@ -322,20 +356,15 @@ async function capturePhotoFromVideo() {
         return canvas;
     }
 
+    const rotationRadians = (rotationDegrees * Math.PI) / 180;
     const rotatedCanvas = document.createElement("canvas");
-    rotatedCanvas.width = sourceHeight;
-    rotatedCanvas.height = sourceWidth;
+    rotatedCanvas.width = Math.abs(rotationDegrees) === 90 ? sourceHeight : sourceWidth;
+    rotatedCanvas.height = Math.abs(rotationDegrees) === 90 ? sourceWidth : sourceHeight;
 
     const rotatedCtx = rotatedCanvas.getContext("2d");
     rotatedCtx.save();
     rotatedCtx.translate(rotatedCanvas.width / 2, rotatedCanvas.height / 2);
-
-    if (deviceIsLandscape) {
-        rotatedCtx.rotate(Math.PI / 2);
-    } else {
-        rotatedCtx.rotate(-Math.PI / 2);
-    }
-
+    rotatedCtx.rotate(rotationRadians);
     rotatedCtx.drawImage(tempCanvas, -sourceWidth / 2, -sourceHeight / 2, sourceWidth, sourceHeight);
     rotatedCtx.restore();
 
@@ -349,6 +378,7 @@ async function capturePhotoFromVideo() {
 }
 
 startOrientationTracking();
+registerOrientationPermissionPrompt();
 
 const takePhoto = document.getElementById("takePhoto");
 
