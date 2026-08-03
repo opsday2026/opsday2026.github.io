@@ -50,6 +50,10 @@ photoInput.onchange = (e)=>{
     takePhoto.style.display="none";
 
     commentSection.style.display="block";
+    document
+        .getElementById("previewScreen")
+        .classList.remove("hidden");
+
 
 }
 
