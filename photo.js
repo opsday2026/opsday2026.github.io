@@ -25,7 +25,7 @@ const background = document.getElementById("background");
 const commentSection = document.getElementById("commentSection");
 const statusBox = document.getElementById("status");
 const uploadScreen = document.getElementById("uploadScreen");
-
+checkLoginAndStart(statusBox, uploadScreen);
 takePhoto.onclick = () => {
 
     photoInput.click();
