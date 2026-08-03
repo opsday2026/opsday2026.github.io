@@ -36,6 +36,7 @@ function setViewportHeight() {
 window.addEventListener("resize", setViewportHeight);
 window.addEventListener("orientationchange", setViewportHeight);
 setViewportHeight();
+getPhotoRotationDegrees();
 
 document.addEventListener("DOMContentLoaded", () => {
 
