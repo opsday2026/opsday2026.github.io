@@ -220,34 +220,80 @@ async function startCamera(){
 
 }
 
+function isDeviceLandscape() {
+    if (window.orientation !== undefined) {
+        return Math.abs(window.orientation) === 90;
+    }
+
+    const orientationType = screen?.orientation?.type;
+    if (orientationType) {
+        return orientationType.includes("landscape");
+    }
+
+    return window.innerWidth > window.innerHeight;
+}
+
+function capturePhotoFromVideo() {
+    const canvas = document.getElementById("canvas");
+    const sourceWidth = video.videoWidth || video.clientWidth || 1280;
+    const sourceHeight = video.videoHeight || video.clientHeight || 720;
+    const deviceIsLandscape = isDeviceLandscape();
+    const needsRotation = (deviceIsLandscape && sourceHeight > sourceWidth) || (!deviceIsLandscape && sourceWidth > sourceHeight);
+
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = sourceWidth;
+    tempCanvas.height = sourceHeight;
+
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCtx.save();
+    tempCtx.translate(sourceWidth, 0);
+    tempCtx.scale(-1, 1);
+    tempCtx.drawImage(video, 0, 0, sourceWidth, sourceHeight);
+    tempCtx.restore();
+
+    if (!needsRotation) {
+        canvas.width = sourceWidth;
+        canvas.height = sourceHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(tempCanvas, 0, 0, sourceWidth, sourceHeight);
+        return canvas;
+    }
+
+    const rotatedCanvas = document.createElement("canvas");
+    rotatedCanvas.width = sourceHeight;
+    rotatedCanvas.height = sourceWidth;
+
+    const rotatedCtx = rotatedCanvas.getContext("2d");
+    rotatedCtx.save();
+    rotatedCtx.translate(rotatedCanvas.width / 2, rotatedCanvas.height / 2);
+
+    if (deviceIsLandscape) {
+        rotatedCtx.rotate(Math.PI / 2);
+    } else {
+        rotatedCtx.rotate(-Math.PI / 2);
+    }
+
+    rotatedCtx.drawImage(tempCanvas, -sourceWidth / 2, -sourceHeight / 2, sourceWidth, sourceHeight);
+    rotatedCtx.restore();
+
+    canvas.width = rotatedCanvas.width;
+    canvas.height = rotatedCanvas.height;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(rotatedCanvas, 0, 0);
+
+    return canvas;
+}
+
 const takePhoto = document.getElementById("takePhoto");
 
 if (takePhoto) {
     takePhoto.addEventListener("click", () => {
 
-
-    const canvas = document.getElementById("canvas");
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-
-    const ctx = canvas.getContext("2d");
-    ctx.save();
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(
-        video,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-    ctx.restore();
-
+    const canvas = capturePhotoFromVideo();
 
     canvas.toBlob((blob)=>{
-
 
         selectedFile = new File(
             [blob],
