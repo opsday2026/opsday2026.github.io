@@ -20,7 +20,7 @@ let selectedFile = null;
 
 const takePhoto = document.getElementById("takePhoto");
 const photoInput = document.getElementById("photoInput");
-const preview = document.getElementById("preview");
+const preview = document.getElementById("previewImage");
 const background = document.getElementById("background");
 const commentSection = document.getElementById("commentSection");
 const statusBox = document.getElementById("status");
