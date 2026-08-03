@@ -44,9 +44,11 @@ photoInput.onchange = (e)=>{
 
     preview.src = url;
     preview.style.display="block";
+    preview.style.objectFit="contain";
 
     background.style.backgroundImage=`url(${url})`;
     background.style.display="block";
+
 
     takePhoto.style.display="none";
 
@@ -132,9 +134,12 @@ function resetPage(){
 
     document.getElementById("comment").value="";
 
-    commentSection.style.display="none";
+    // commentSection.style.display="none";
 
     takePhoto.style.display="block";
+    document
+        .getElementById("content")
+        .classList.add("hidden");
 
 }
 
