@@ -245,6 +245,22 @@ function updateGyroOrientation(event) {
     };
 }
 
+function syncOrientationFromScreen() {
+    const orientationAngle = typeof window.orientation === "number"
+        ? window.orientation
+        : typeof screen?.orientation?.angle === "number"
+            ? screen.orientation.angle
+            : 0;
+
+    gyroOrientation = {
+        available: true,
+        landscape: Math.abs(orientationAngle) === 90,
+        beta: orientationAngle,
+        gamma: 0,
+        lastUpdate: Date.now(),
+    };
+}
+
 function startOrientationTracking() {
     if (typeof window === "undefined" || typeof window.addEventListener !== "function") {
         return;
@@ -255,12 +271,16 @@ function startOrientationTracking() {
     }, true);
 
     window.addEventListener("orientationchange", () => {
-        gyroOrientation.available = false;
-        gyroOrientation.landscape = false;
-        gyroOrientation.beta = 0;
-        gyroOrientation.gamma = 0;
-        gyroOrientation.lastUpdate = 0;
+        syncOrientationFromScreen();
     });
+
+    if (typeof screen !== "undefined" && screen.orientation && typeof screen.orientation.addEventListener === "function") {
+        screen.orientation.addEventListener("change", () => {
+            syncOrientationFromScreen();
+        });
+    }
+
+    syncOrientationFromScreen();
 }
 
 async function ensureOrientationPermission() {
@@ -301,8 +321,14 @@ function getPhotoRotationDegrees() {
         }
     }
 
-    if (window.orientation !== undefined) {
-        return -window.orientation;
+    const orientationAngle = typeof window.orientation === "number"
+        ? window.orientation
+        : typeof screen?.orientation?.angle === "number"
+            ? screen.orientation.angle
+            : 0;
+
+    if (orientationAngle !== 0) {
+        return -orientationAngle;
     }
 
     const orientationType = screen?.orientation?.type;
