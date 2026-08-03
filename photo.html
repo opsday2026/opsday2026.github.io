@@ -31,20 +31,23 @@
 
             <div id="status" class="status">Verifica accesso in corso...</div>
             <div id="content" class="hidden">
-                <img id="preview">
-
-                <div id="commentSection">
+                <img id="previewImage">
+                <div id="successOverlay" class="success-overlay hidden">
+                    <div class="success-card">
+                        <p>Foto inviata 🎉</p>
+                        <button id="successOk" type="button">OK</button>
+                    </div>
+                </div>
+                
+                <div class="overlay">
 
                     <textarea
                         id="comment"
                         placeholder="Scrivi un commento..."></textarea>
 
                     <button
-                        class="send"
                         id="sendButton">
-
                         Invia
-
                     </button>
 
                 </div>
