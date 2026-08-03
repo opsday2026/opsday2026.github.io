@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<title>OpsDay 2026</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+<div id="uploadScreen">
+    <img id="logo" src="Logo.png" alt="Logo">
+
+    <div id="cameraFallback" class="camera-fallback hidden">
+        Consenti l'accesso alla fotocamera per continuare.
+    </div>
+
+    <button id="takePhoto">
+        📷 Scattati una foto
+    </button>
+
+    <input
+        id="photoInput"
+        type="file"
+        accept="image/*"
+        capture="user"
+        hidden>
+</div>
+<div id="status" class="status">Verifica accesso in corso...</div>
+<div id="content" class="hidden">
+    <img id="preview">
+
+    <div id="commentSection">
+
+        <textarea
+            id="comment"
+            placeholder="Scrivi un commento..."></textarea>
+
+        <button
+            class="send"
+            id="sendButton">
+
+            Invia
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="photo.js"></script>
+
+</body>
+</html>
