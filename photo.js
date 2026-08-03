@@ -50,7 +50,7 @@ photoInput.onchange = (e)=>{
 
     takePhoto.style.display="none";
 
-    commentSection.style.display="block";
+    // commentSection.style.display="block";
     content.classList.remove("hidden");
     content.style.display="block";
 
