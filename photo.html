@@ -16,11 +16,15 @@
 
     <body>
         <div id="background"></div>
-        <div id="uploadScreen">
+        <label id="unauthorized" class="success-overlay hidden">
+                <p>Non sei autorizzato a inviare foto.</p>
+                <p>Contatta l'organizzazione per ricevere un invito.</p>
+            </label>
+        <div id="uploadScreen" class="hidden">
             <img id="logo" src="Logo.png" alt="Logo">
+            
 
-            <button id="takePhotoButton" type="button">
-                📷 Scattati una foto
+            <button id="takePhotoButton" type="button"><span class="icon">📷 </span>  Scattati una foto
             </button>
 
             <input

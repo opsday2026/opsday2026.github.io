@@ -134,8 +134,14 @@ body {
     left:50%;
     top:50%;
     transform:translate(-50%, -50%);
-    padding:18px 35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:0px;
+    /* padding:18px 35px; */
     font-size:22px;
+    line-height:1.2;
+    text-align:center;
     border:none;
     border-radius:12px;
     cursor:pointer;
@@ -143,8 +149,13 @@ body {
     background:#e11d48;
     color:#fff;
     width:70%;
+    box-sizing:border-box;
 }
-
+.icon {
+    display: inline-block;
+    transform: translateY(-4px); /* prova tra -1px e -4px */
+    margin-right: 8px;
+}
 
 
 .uploadButton {

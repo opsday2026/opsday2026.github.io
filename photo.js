@@ -26,6 +26,8 @@ const background = document.getElementById("background");
 const statusBox = document.getElementById("status");
 const uploadScreen = document.getElementById("uploadScreen");
 const content = document.getElementById("content");
+const unauthorized = document.getElementById("unauthorized");
+
 checkLoginAndStart(statusBox, uploadScreen);
 takePhoto.onclick = () => {
 
@@ -33,12 +35,64 @@ takePhoto.onclick = () => {
 
 };
 
-photoInput.onchange = (e)=>{
+async function resizeImageFile(file, maxWidth = 1920, maxHeight = 1080, quality = 0.85) {
+    if (!file || !file.type.startsWith("image/")) {
+        return file;
+    }
 
-    selectedFile = e.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
 
-    if(!selectedFile)
+    try {
+        const image = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = imageUrl;
+        });
+
+        const width = image.naturalWidth || image.width;
+        const height = image.naturalHeight || image.height;
+        const shortSide = Math.min(width, height);
+        const longSide = Math.max(width, height);
+        const scale = Math.min(1, maxHeight / shortSide, maxWidth / longSide);
+
+        if (scale >= 1) {
+            return file;
+        }
+
+        const targetWidth = Math.round(width * scale);
+        const targetHeight = Math.round(height * scale);
+
+        const canvas = document.createElement("canvas");
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        const context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0, targetWidth, targetHeight);
+
+        const blob = await new Promise((resolve) => {
+            canvas.toBlob(resolve, "image/jpeg", quality);
+        });
+
+        if (!blob) {
+            return file;
+        }
+
+        const cleanName = file.name.replace(/\.[^.]+$/, "") || "photo";
+        return new File([blob], `${cleanName}.jpg`, { type: "image/jpeg" });
+    } finally {
+        URL.revokeObjectURL(imageUrl);
+    }
+}
+
+photoInput.onchange = async (e)=>{
+
+    const file = e.target.files[0];
+
+    if(!file)
         return;
+
+    selectedFile = await resizeImageFile(file);
 
     const url = URL.createObjectURL(selectedFile);
 
@@ -156,12 +210,14 @@ async function checkLoginAndStart(statusBox, uploadScreen) {
     if (error || !data || data.id !== 1 ) {
         statusBox.textContent = "Accesso negato: impossibile attivare la videocamera.";
         uploadScreen.classList.add("hidden");
+        unauthorized.classList.remove("hidden");
         setTimeout(() => statusBox.classList.add("hidden"), 5000);
         return;
     }
 
     statusBox.textContent = "Accesso autorizzato. Fotocamera attiva.";
     uploadScreen.classList.remove("hidden");
+    unauthorized.classList.add("hidden");
     setTimeout(() => statusBox.classList.add("hidden"), 5000);
     
 }
