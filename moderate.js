@@ -80,7 +80,7 @@ async function updatePhotoDecision(nextApproved) {
         .from("photos_comments")
         .update({
             approved: nextApproved,
-            viewed: true,
+            viewed: false,
         })
         .eq("id", currentPhoto.id);
 
