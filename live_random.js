@@ -170,6 +170,7 @@ function scheduleRotation() {
 }
 
 async function ensureQueueHasItems() {
+    console.log("Ensuring queue has items. Current queue length:", photoQueue.length, "Active mode:", activeMode);
     if (photoQueue.length > 0) {
         return;
     }
@@ -306,7 +307,9 @@ async function initializeLiveWall() {
     } else {
         fallbackItems = await fetchFallbackPhotos();
         if (fallbackItems.length > 0) {
+            console.log("Using fallback items:", fallbackItems.length);
             photoQueue = [...fallbackItems];
+            console.log("Photo queue initialized with fallback items:", photoQueue.length);
             activeMode = "fallback";
             const firstItem = photoQueue.shift();
             if (firstItem) {
