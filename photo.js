@@ -35,7 +35,7 @@ takePhoto.onclick = () => {
 
 };
 
-async function resizeImageFile(file, maxWidth = 1280, maxHeight = 720, quality = 0.75) {
+async function resizeImageFile(file, maxWidth = 960, maxHeight = 720, quality = 0.60) {
     if (!file || !file.type.startsWith("image/")) {
         return file;
     }
