@@ -18,22 +18,6 @@
 
     <div id="moderationContent" class="moderation-content hidden">
         
-        <div id="moderationFrame" class="moderation-frame">
-            <img id="photoImage" alt="Foto da moderare" loading="eager">
-        </div>
-
-        <div class="moderation-meta">
-            <div id="photoCommentMod" class="moderation-meta-comment">Seleziona una foto</div>
-            <div id="photoInfoMod"></div>
-        </div>
-
-        <div id="moderationActions" class="moderation-actions">
-            <button id="approveButton" class="approve-button" type="button">Approva</button>
-            <button id="rejectButton" class="reject-button" type="button">Rifiuta</button>
-        </div>
-        
-        
-
         <div class="gallery-container">
             <div class="gallery-controls">
                 <label class="switch-label">
@@ -44,6 +28,22 @@
             </div>
             <div id="thumbnailGallery" class="thumbnail-gallery">
                 <!-- Anteprime caricate dinamicamente -->
+            </div>
+        </div>
+
+        <div class="moderation-main">
+            <div id="moderationFrame" class="moderation-frame">
+                <img id="photoImage" alt="Foto da moderare" loading="eager">
+            </div>
+
+            <div class="moderation-meta">
+                <div id="photoCommentMod" class="moderation-meta-comment">Seleziona una foto</div>
+                <div id="photoInfoMod"></div>
+            </div>
+
+            <div id="moderationActions" class="moderation-actions">
+                <button id="approveButton" class="approve-button" type="button">Approva</button>
+                <button id="rejectButton" class="reject-button" type="button">Rifiuta</button>
             </div>
         </div>
     </div>

@@ -31,7 +31,7 @@ let isProcessing = false;
 let pollTimer = null;
 let showRejected = false;
 
-const POLL_INTERVAL_MS = 10000;
+const POLL_INTERVAL_MS = 30000;
 
 function updateStatus(text) {
     if (statusBox) {
@@ -69,6 +69,7 @@ async function getPhotoUrl(filename) {
 
 
 async function updatePhotoDecision(nextApproved) {
+    console.log(`Updating photo decision for photo ID ${currentPhoto?.id} to approved=${nextApproved}`);
     if (!currentPhoto || isProcessing) {
         return;
     }
@@ -96,7 +97,7 @@ async function updatePhotoDecision(nextApproved) {
     if (photoIndex !== -1) {
         allPhotos[photoIndex].approved = nextApproved;
     }
-    currentPhoto = null;
+    // currentPhoto = null;
     // Re-render gallery and load next photo
     await renderThumbnailGallery();
     await loadNextPhoto();
@@ -201,7 +202,7 @@ async function renderThumbnailGallery() {
         } else if (photo.approved === 1) {
             thumbnail.classList.add("rejected");
         }
-
+        thumbnail.dataset.photoId = photo.id;
         const img = document.createElement("img");
         img.alt = "Thumbnail";
         
@@ -217,9 +218,11 @@ async function renderThumbnailGallery() {
         thumbnail.appendChild(status);
         
         thumbnail.addEventListener("click", () => {
+            console.log("Thumbnail selected:", thumbnail.dataset.photoId);
             currentPhoto = photo;
-            loadPhotoDetail(photo);
             updateActiveThumb();
+            loadPhotoDetail(photo);
+            
         });
 
         thumbnailGallery.appendChild(thumbnail);
@@ -231,15 +234,13 @@ function updateActiveThumb() {
         thumb.classList.remove("active");
     });
     
-    const currentThumbs = document.querySelectorAll(".thumbnail-item");
-    const currentIndex = Array.from(currentThumbs).findIndex(thumb => {
-        const img = thumb.querySelector("img");
-        return img.src && currentPhoto && img.alt === "Thumbnail";
-    });
-
-    if (currentIndex >= 0) {
-        currentThumbs[currentIndex].classList.add("active");
-        currentThumbs[currentIndex].scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (!currentPhoto) return;
+    
+    const activeThumbnail = document.querySelector(`[data-photo-id="${currentPhoto.id}"]`);
+    
+    if (activeThumbnail) {
+        activeThumbnail.classList.add("active");
+        activeThumbnail.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
 }
 
@@ -298,6 +299,8 @@ showRejectedToggle?.addEventListener("change", async () => {
 
 approveButton?.addEventListener("click", () => updatePhotoDecision(2));
 rejectButton?.addEventListener("click", () => updatePhotoDecision(1));
+
+
 
 initializeModeration();
 
