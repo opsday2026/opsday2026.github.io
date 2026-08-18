@@ -121,7 +121,7 @@ async function showNextPhoto() {
     if (photoQueue.length === 0) {
         await ensureQueueHasItems();
     }
-
+    console.log("Showing next photo. Queue length:", photoQueue.length);
     const nextItem = photoQueue.shift();
     if (!nextItem) {
         return;
@@ -351,9 +351,12 @@ function updatePlayButton() {
 }
 
 function togglePlayPause() {
+    console.log("Toggling play/pause. Current state:", isPlaying);
     isPlaying = !isPlaying;
     updatePlayButton();
-
+    console.log("Play/pause toggled. New state:", isPlaying);
+    console.log("Rotation timer before toggle:", rotationTimer);
+    console.log("Photo queue length:", photoQueue.length);
     if (!isPlaying) {
         if (rotationTimer) {
             clearInterval(rotationTimer);
@@ -362,7 +365,7 @@ function togglePlayPause() {
         return;
     }
 
-    if (photoQueue.length > 0 && !rotationTimer) {
+    if (!rotationTimer) {
         scheduleRotation();
     }
 }
