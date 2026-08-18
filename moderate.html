@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<title>OpsDay 2026 - Moderazione</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div id="moderationScreen">
+    <img id="logo" src="Logo.png" alt="Logo">
+    <div id="status" class="status">Verifica accesso in corso...</div>
+
+    <div id="moderationContent" class="moderation-content hidden">
+        
+        <div id="moderationFrame" class="moderation-frame">
+            <img id="photoImage" alt="Foto da moderare" loading="eager">
+        </div>
+
+        <div id="moderationActions" class="moderation-actions">
+            <button id="approveButton" class="approve-button" type="button">Approva</button>
+            <button id="rejectButton" class="reject-button" type="button">Rifiuta</button>
+        </div>
+        
+        <div class="moderation-meta">
+            <div id="photoCommentMod">Seleziona una foto</div>
+            <div id="photoInfoMod"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="moderate.js"></script>
+</body>
+</html>

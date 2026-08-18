@@ -21,11 +21,12 @@
     <div class="live-column left-column">
         <div id="photoFrame">
             <img id="photoImage" alt="Foto live" loading="eager">
+            <button id="nextPhotoButton" class="next-photo-button" type="button" aria-label="Mostra la foto successiva" title="Mostra la foto successiva"></button>
         </div>
     </div>
 
     <div class="live-column right-column">
-        <div id="photoComment" class="photo-comment">Caricamento commento...</div>
+        <div id="photoComment" class="photo-comment">Attesa immagini...</div>
         <div id="photoInfo" class="photo-info" hidden>Attendi la prossima foto.</div>
 
         <button id="playPause" class="play-pause" type="button" aria-label="Pausa">
@@ -35,7 +36,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="live.js"></script>
+<script src="live_random.js"></script>
 
 </body>
 
