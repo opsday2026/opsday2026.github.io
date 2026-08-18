@@ -456,8 +456,8 @@ button:hover {
 
 #moderationScreen {
     width:100vw;
-    min-height:100dvh;
-    height:100dvh;
+    min-height:90dvh;
+    height:90dvh;
     height:calc(var(--vh, 1vh) * 100);
     position:relative;
     overflow:hidden;
@@ -477,15 +477,16 @@ button:hover {
     align-items:center;
     justify-content:center;
     /* padding:80px 24px 24px; */
-    padding:50px 0px 0px 0px;
-    gap:16px;
+    padding:10px 0px 0px 0px;
+    gap:10px;
     box-sizing:border-box;
 }
 
 .moderation-frame {
-    width: min(88vw, 88vh);
-    aspect-ratio: 1;
+    /* width: min(88vw, 68vh); */
+    /* aspect-ratio: 1; */
     max-width: 880px;
+    max-height: 500px;
     display: flex;
     /* align-items: center; */
     /* justify-content: center; */
@@ -571,7 +572,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 16px 0;
+    padding: 10px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     box-sizing: border-box;
 }
@@ -580,7 +581,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 16px;
+    padding: 0 10px;
     gap: 8px;
 }
 
@@ -639,7 +640,7 @@ button:hover {
 .thumbnail-gallery {
     display: flex;
     gap: 8px;
-    overflow-x: auto;
+    /* overflow-x: auto; */
     padding: 0 16px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
