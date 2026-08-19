@@ -20,6 +20,7 @@ const photoImage = document.getElementById("photoImage");
 const photoComment = document.getElementById("photoComment");
 const photoInfo = document.getElementById("photoInfo");
 const playPause = document.getElementById("playPause");
+const qrCodeImage = document.getElementById("qrCode");
 
 let latestCommentId = 0;
 let photoQueue = [];
@@ -219,11 +220,43 @@ async function fetchNewComments() {
     return data || [];
 }
 
+
+
+
+async function getQrCode(filename="TakePhotoQR.svg") {
+    const loggedIn = await checkLogin();
+    if (!loggedIn) {
+        return;
+    }
+    console.log("Fetching QR code for filename:", filename);
+    const { data, error } = await supabaseClient
+        .storage
+        .from("QRcodes")
+        .createSignedUrl(filename, 60 * 60);
+    console.log("QR code fetch result:", { data, error });
+
+
+    return data.signedUrl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 async function initializeLiveWall() {
     const loggedIn = await checkLogin();
     if (!loggedIn) {
         return;
     }
+
+    qrCodeImage.src = await getQrCode();
 
     const unviewed = await fetchUnviewedComments();
     if (unviewed.length > 0) {
