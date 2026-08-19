@@ -15,15 +15,13 @@ body {
     -webkit-touch-callout:none;
     -webkit-text-size-adjust:100%;
     touch-action:none;
-    position:fixed;
-    inset:0;
     font-family:Arial, sans-serif;
     background:#fff;
 }
 
 #uploadScreen,
 #previewScreen {
-    width:100vw;
+    width: 100%;
     min-height:100dvh;
     height:100dvh;
     height:calc(var(--vh, 1vh) * 100);
@@ -60,11 +58,6 @@ body {
 
     display:none;
 }
-
-
-
-
-
 
 
 
