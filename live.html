@@ -10,12 +10,14 @@
 <title>OpsDay 2026 - Live Wall</title>
 
 <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 <div id="liveScreen">
     <img id="logoBar" src="QrBar.png" alt="Logo">
+    <img id="logoTopRight" src="https://aadcdn.msftauthimages.net/c1c6b6c8-y0ttu-qrv1hztm2vbitcbzn2dphdtc3lwrqvcb6okxa/logintenantbranding/0/bannerlogo?ts=638798065923306332" alt="Logo">
     <span id="logotext">Inquadra il qrcode e condividi i momenti migliori di questa giornata!</span>
     <div id="status" class="status">Verifica accesso in corso...</div>
 
@@ -37,7 +39,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="live_random.js"></script>
+<script src="cache-manager.js"></script>
+<!-- <script src="live_random.js"></script> -->
+<script src="live.js"></script>
 
 </body>
 

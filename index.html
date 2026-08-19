@@ -11,6 +11,7 @@
         <title>OpsDay 2026</title>
 
         <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     </head>
 
@@ -20,9 +21,12 @@
                 <p>Non sei autorizzato a inviare foto.</p>
                 <p>Contatta l'organizzazione per ricevere un invito.</p>
             </label>
+        <div id="status" class="status">Verifica accesso in corso...</div>
         <div id="uploadScreen" class="hidden">
-            <img id="logo" src="Logo.png" alt="Logo">
             
+            <img id="logoTopRight" src="Logo.png" alt="Logo">
+            <img id="logoTopLeft" src="https://aadcdn.msftauthimages.net/c1c6b6c8-y0ttu-qrv1hztm2vbitcbzn2dphdtc3lwrqvcb6okxa/logintenantbranding/0/bannerlogo?ts=638798065923306332" alt="Logo">
+
 
             <button id="takePhotoButton" type="button"><span class="icon">📷 </span>  Scattati una foto
             </button>
@@ -34,7 +38,7 @@
                 capture="user"
                 hidden>
 
-            <div id="status" class="status">Verifica accesso in corso...</div>
+            
             <div id="content" class="hidden">
                 <img id="previewImage">
 
@@ -49,12 +53,24 @@
 
                     <textarea
                         id="comment"
-                        placeholder="Scrivi un commento..."></textarea>
+                        placeholder="Scrivi un commento..."
+                        maxlength="140"></textarea>
+                    <div style="color: #fff; background: radial-gradient(
+                                                                ellipse at center,
+                                                                rgba(0, 0, 0, 1) 0%,
+                                                                rgba(0, 0, 0, 0.8) 30%,
+                                                                rgba(0, 0, 0, 0) 100%
+                                                            )" ><span id="counter" >140</span> caratteri rimasti</div>
+                    <script>
+                    const textarea = document.getElementById('comment');
+                    const counter = document.getElementById('counter');
 
-                    <button
-                        id="sendButton">
-                        Invia
-                    </button>
+                    textarea.addEventListener('input', () => {
+                        counter.textContent = 140 - textarea.value.length;
+                    });
+                    </script>
+                    <button id="sendButton" type="button">Invia</button>
+                    <button id="cancelButton" type="button">Annulla</button>
 
                 </div>
 

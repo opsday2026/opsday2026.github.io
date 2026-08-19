@@ -28,6 +28,8 @@ const uploadScreen = document.getElementById("uploadScreen");
 const content = document.getElementById("content");
 const unauthorized = document.getElementById("unauthorized");
 
+
+
 checkLoginAndStart(statusBox, uploadScreen);
 takePhoto.onclick = () => {
 
@@ -114,6 +116,8 @@ photoInput.onchange = async (e)=>{
 }
 
 document.getElementById("sendButton").onclick = sendPhoto;
+document.getElementById("cancelButton").onclick = resetPage;
+
 
 async function sendPhoto(){
 
@@ -186,7 +190,8 @@ function resetPage(){
 
     background.style.display="none";
 
-    document.getElementById("comment").value="";
+    textarea.value="";
+    counter.textContent = "140";
 
     // commentSection.style.display="none";
 
@@ -215,7 +220,7 @@ async function checkLoginAndStart(statusBox, uploadScreen) {
         return;
     }
 
-    statusBox.textContent = "Accesso autorizzato. Fotocamera attiva.";
+    statusBox.textContent = "Accesso autorizzato";
     uploadScreen.classList.remove("hidden");
     unauthorized.classList.add("hidden");
     setTimeout(() => statusBox.classList.add("hidden"), 5000);

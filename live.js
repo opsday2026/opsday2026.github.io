@@ -86,6 +86,23 @@ async function markCommentViewed(id) {
     }
 }
 
+function randomEmoji() {
+    const emojis = [
+        "😀", "😃", "😄", "😁", "😂", "🤣",
+        "😊", "🥳", "🤩", "😎",
+        "🙌", "👏", "🎉", "🎊", "🥂",
+        "🔥", "🤘", "🤟", "✌️", "💪",
+        "⭐", "🚀"
+    ];
+
+    const count = Math.floor(Math.random() * 3) + 1;
+
+    return Array.from({ length: count }, () =>
+        emojis[Math.floor(Math.random() * emojis.length)]
+    ).join(" ");
+}
+
+
 async function setPhoto(photo) {
     if (!photo) {
         photoInfo.textContent = "Nessuna foto disponibile.";
@@ -95,7 +112,8 @@ async function setPhoto(photo) {
     }
 
     photoImage.src = photo.url;
-    photoComment.textContent = photo.id + ": " + (photo.comment || "Nessun commento disponibile.");
+    // photoComment.textContent = photo.id + ": " + (photo.comment || "Nessun commento disponibile.");
+    photoComment.textContent = photo.comment || randomEmoji();
     photoInfo.textContent = `Foto caricata il ${new Date(photo.created_at).toLocaleString()}`;
 
     if (!photo.viewed) {
@@ -169,6 +187,7 @@ async function fetchUnviewedComments() {
         .from("photos_comments")
         .select("id, photo_id, filename, comment, created_at, viewed")
         .eq("viewed", false)
+        .eq("approved", 2)
         .order("id", { ascending: true })
         .limit(20);
 
@@ -187,6 +206,7 @@ async function fetchNewComments() {
         .select("id, photo_id, filename, comment, created_at, viewed")
         // .gt("id", latestCommentId)
         .eq("viewed", false)
+        .eq("approved", 2)
         .order("id", { ascending: true })
         .limit(20);
 
@@ -218,6 +238,7 @@ async function initializeLiveWall() {
             .from("photos_comments")
             .select("id, photo_id, filename, comment, created_at, viewed")
             .order("id", { ascending: false })
+            .eq("approved", 2)
             .limit(1)
             .maybeSingle();
 
